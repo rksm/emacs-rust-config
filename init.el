@@ -68,12 +68,6 @@
 	("<tab>". tab-indent-or-complete)
 	("TAB". tab-indent-or-complete)))
 
-(use-package company-lsp
-  :ensure
-  :commands company-lsp
-  :config
-  (push 'company-lsp company-backends))
-
 (defun company-yasnippet-or-completion ()
   (interactive)
   (or (do-yas-expand)
