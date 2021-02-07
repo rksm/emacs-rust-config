@@ -2,3 +2,4 @@
 .lsp-session-*
 elpa/
 recentf
+custom.el

@@ -1,51 +1,31 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; this is to support loading from a non-standard .emacs.d
-;; via emacs -q --load "/path/to/init.el"
-;; see https://emacs.stackexchange.com/a/4258/22184
-(setq user-init-file (or load-file-name (buffer-file-name)))
-(setq user-emacs-directory (file-name-directory user-init-file))
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; rustic = basic rust-mode + additions
 
-(require 'package)
-(add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(setq package-user-dir (expand-file-name "elpa/" user-emacs-directory))
-(package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(load-theme 'leuven t)
-(fset 'yes-or-no-p 'y-or-n-p)
-(recentf-mode 1)
-(setq recentf-max-saved-items 100)
-
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(scroll-bar-mode 0)
-
-(cond
- ((member "Monaco" (font-family-list))
-  (set-face-attribute 'default nil :font "Monaco-12"))
- ((member "Inconsolata" (font-family-list))
-  (set-face-attribute 'default nil :font "Inconsolata-12"))
- ((member "Consolas" (font-family-list))
-  (set-face-attribute 'default nil :font "Consolas-11"))
- ((member "DejaVu Sans Mono" (font-family-list))
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono-10")))
+(use-package rustic
+  :ensure
+  :custom
+  ;; (lsp-eldoc-hook nil) ;; uncomment to disable minibuffer doc
+  ;; (lsp-enable-symbol-highlighting nil) ;; uncomment for less flashiness
+  ;; (lsp-signature-auto-activate nil)
+  :bind (:map rustic-mode-map
+              ("C-c C-c l" . flycheck-list-errors)
+              ("M-?" . lsp-find-references)
+	      ("C-c C-c a" . lsp-execute-code-action)
+	      ("C-c C-c r" . lsp-rename)
+	      ("C-c C-c q" . lsp-workspace-restart)
+	      ("C-c C-c Q" . lsp-workspace-shutdown)
+	      ("C-c C-c s" . lsp-rust-analyzer-status)))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; Rust config starts here
+;; for rust-analyzer integration
 
 (use-package lsp-mode
   :ensure
   :commands lsp
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
   :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  ;; (setq lsp-rust-server 'rust-analyzer)
-  )
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package lsp-ui
   :ensure
@@ -57,6 +37,38 @@
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6))
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; inline errors
+
+(use-package flycheck :ensure)
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; auto-completion and code snippets
+
+(use-package yasnippet
+  :ensure
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode))
+
+(use-package company
+  :ensure
+  :bind
+  (:map company-active-map
+	      ("C-n". company-select-next)
+	      ("C-p". company-select-previous)
+	      ("M-<". company-select-first)
+	      ("M->". company-select-last))
+  (:map company-mode-map
+	("<tab>". tab-indent-or-complete)
+	("TAB". tab-indent-or-complete)))
+
+(use-package company-lsp
+  :ensure
+  :commands company-lsp
+  :config
+  (push 'company-lsp company-backends))
 
 (defun company-yasnippet-or-completion ()
   (interactive)
@@ -84,103 +96,3 @@
         (if (check-expansion)
             (company-complete-common)
           (indent-for-tab-command)))))
-
-(use-package company
-  :ensure
-  :bind
-  (:map company-active-map
-	      ("C-n". company-select-next)
-	      ("C-p". company-select-previous)
-	      ("M-<". company-select-first)
-	      ("M->". company-select-last)
-	      ;;("<tab>". company-yasnippet-or-completion)
-	      ;; ("TAB". company-yasnippet-or-completion)
-	      )
-  (:map company-mode-map
-	("<tab>". tab-indent-or-complete)
-	("TAB". tab-indent-or-complete)))
-
-(use-package company-lsp
-  :ensure
-  :commands company-lsp
-  :config (push 'company-lsp company-backends))
-
-(use-package flycheck :ensure)
-
-(use-package flycheck-rust :ensure)
-
-;; (use-package rust-mode :ensure
-;;   :config
-;;   (add-hook 'rust-mode-hook 'lsp)
-;;   (add-hook 'rust-mode-hook 'company-mode)
-;;   (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
-
-
-;; lsp-rust-analyzer-call-info-full
-;; lsp-rust-show-hover-context
-;; (setq lsp-signature-auto-activate nil)
-;;   (setq lsp-enable-symbol-highlighting nil)
-;;   (setq lsp-eldoc-hook nil)
-
-
-(use-package rustic
-    :ensure
-    ;; :custom
-    ;; (rustic-test-arguments "--nocapture")
-    ;; (rustic-format-on-save nil)
-    ;; (rustic-lsp-format t)
-    ;; (lsp-rust-full-docs t)
-    ;; (lsp-rust-analyzer-cargo-watch-command "clippy")
-
-    :bind (:map rustic-mode-map
-                ("M-?" . lsp-find-references)
-		("C-c C-c a" . lsp-execute-code-action)
-		("C-c C-c r" . lsp-rename)
-		("C-c C-c q" . lsp-workspace-restart)
-		("C-c C-c Q" . lsp-workspace-shutdown)
-		("C-c C-c s" . lsp-rust-analyzer-status))
-
-    ;; :config
-    ;; (add-hook 'rustic-mode-hook 'company-mode)
-    )
-
-(use-package yasnippet
-  :ensure
-  :config
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook 'yas-minor-mode)
-  (add-hook 'text-mode-hook 'yas-minor-mode))
-
-(use-package which-key
-  :ensure
-  :init
-  (which-key-mode))
-
-(use-package selectrum
-  :ensure
-  :init
-  (selectrum-mode)
-  :custom
-  (completion-styles '(flex substring partial-completion)))
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
-;; (defun rk/define-prefix-command-map (prefix-symbol parent-map kbd-in-parent key-map)
-;;   ""
-;;   (let ((map (define-prefix-command prefix-symbol)))
-;;     (define-key parent-map kbd-in-parent map)
-;;     (cl-loop for (key . sym) in key-map
-;; 	     do (define-key map key sym))))
-
-;; (global-set-key (kbd "M-m") 'company-complete)
-;; (define-key global-map (kbd "C-c f") flycheck-command-map)
-
-;; ;; (define-key rustic-mode-map (kbd "C-c C-c") 'rust-run)
-
-;; (rk/define-prefix-command-map
-;;       'rk/rust-lsp-prefix-map rust-mode-map (kbd "C-c r")
-;;       '(("a" . lsp-execute-code-action)
-;;         ("r" . lsp-rename)
-;;         ("q" . lsp-workspace-restart)
-;;         ("Q" . lsp-workspace-shutdown)
-;;         ("i" . lsp-rust-analyzer-status)))
