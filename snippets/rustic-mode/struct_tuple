@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tuple struct
+# key: structt
+# --
+struct Pair(${1:i32, f32});

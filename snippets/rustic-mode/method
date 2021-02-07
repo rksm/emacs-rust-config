@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: method
+# key: mfn
+# --
+fn ${1:name}(&mut self)${3: -> Result} {
+   $0
+}

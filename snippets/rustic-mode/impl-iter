@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+#name : impl-iter
+#key : impl-iter
+#contributor : Robert Krahn
+# --
+impl Iterator for ${1:X} {
+    type Item = ${2:Y};
+
+    fn next(&mut self) -> Option<$2> {
+        Some(${3:next})
+    }
+}

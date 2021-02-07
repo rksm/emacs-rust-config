@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : assert
+#key : as
+#contributor : robert
+# --
+assert!(${1:truth});

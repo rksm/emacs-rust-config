@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: println-with-arg
+# key: pr
+# --
+println!("{}", $1);

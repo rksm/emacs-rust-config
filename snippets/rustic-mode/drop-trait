@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : drop-trait
+#key : drop
+#contributor : Robert Krahn
+# --
+impl Drop for ${1:type} {
+    fn drop(&mut self) {
+        $0
+    }
+}

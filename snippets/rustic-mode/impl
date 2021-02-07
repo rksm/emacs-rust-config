@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: impl
+# key: impl
+# --
+impl ${1:Name} {
+    fn ${2:method}(${3:&self}) $4 {
+        $0
+    }
+}

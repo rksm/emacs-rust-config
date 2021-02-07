@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: eprintln-with-arg
+# key: epr
+# --
+println!("{}", $1);

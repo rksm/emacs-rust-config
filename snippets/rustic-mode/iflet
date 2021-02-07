@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: if let
+# key: ifl
+# --
+if let ${2:match} = ${1:value} {
+    $0
+}

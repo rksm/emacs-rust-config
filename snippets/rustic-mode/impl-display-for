@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : impl-display-for
+#key : impldisplay
+#contributor : Robert Krahn
+# --
+impl std::fmt::Display for ${1:Name} {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "$0")
+    }
+}

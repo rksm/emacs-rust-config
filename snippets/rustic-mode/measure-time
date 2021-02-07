@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : measure-time
+#key : measure-time
+#contributor : Robert Krahn
+# --
+use std::time::{Duration, Instant};
+let start = Instant::now();
+// ...
+let duration = start.elapsed();
+println!("Time elapsed: {:?}", duration);

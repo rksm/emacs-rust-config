@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : let-match-result
+#key : letres
+#contributor : Robert Krahn
+# --
+let $3 = match ${1:what} {
+    Err(_) => ${2:return},
+    Ok(${3:matched}) => $3,
+};

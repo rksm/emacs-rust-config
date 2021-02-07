@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: eprintln
+# key: p
+# --
+println!("$1");

@@ -1,0 +1,16 @@
+#+STARTUP: showeverything
+
+emacs.d config for enabling Rust support in emacs. It uses rust-anlyzer via rustic, lsp-mode, and lsp-ui-mode and also makes use of company, flycheck, and yasnippet. Among those features you get are
+
+- Navigating the source code (go to to implementation, list references of symbols, outline structure of a file)
+- Code completion ("intellisense")
+- Code snippets
+- Highlighting errors and warnings inline
+- Apply code fixes and refactorings
+- Automatically import definitions if necessary (such as Traits)
+- Code formatting with rustfmt
+- Building & running other cargo commands
+
+This repository accompanies my [[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs/]["Configuring Emacs for Rust development" blog post]].
+
+[[./LICENSE][MIT licensed]]

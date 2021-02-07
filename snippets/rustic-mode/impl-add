@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+#name : impl-add
+#key : impl-add
+#contributor : Robert Krahn
+# --
+impl std::ops::Add for ${1:Type} {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Self { $0 }
+    }
+}

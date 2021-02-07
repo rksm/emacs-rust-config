@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: unit struct
+# key: structu
+# --
+struct ${0:Nil};

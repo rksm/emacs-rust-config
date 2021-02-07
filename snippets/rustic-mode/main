@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : main
+#key : main
+#contributor : rksm
+# --
+fn main() {
+   $0
+}

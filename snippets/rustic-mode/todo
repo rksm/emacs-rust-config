@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : todo
+#key : todo
+#contributor : Robert Krahn
+# --
+todo!("$0")

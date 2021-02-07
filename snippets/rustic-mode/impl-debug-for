@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : impl-debug-for
+#key : impldebug
+#contributor : Robert Krahn
+# --
+impl std::fmt::Debug for ${1:NAme} {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Foo")$0
+    }
+}

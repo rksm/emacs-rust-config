@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : unsafe
+#key : un
+#contributor : Robert Krahn
+# --
+unsafe {
+  $0
+}

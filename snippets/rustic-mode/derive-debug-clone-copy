@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : derive-debug-clone-copy
+#key : derivecommon
+#contributor : Robert Krahn
+# --
+#[derive(Debug, Clone, Copy)]

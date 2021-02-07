@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: println!("{:#?}", value);
+# key: log
+# --
+println!("{:#?}", ${1:value});

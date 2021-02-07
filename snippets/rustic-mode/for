@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : for
+#key : for
+#contributor : rksm
+# --
+for ${2:var} in ${1:expression} {
+    ${0:code}
+}

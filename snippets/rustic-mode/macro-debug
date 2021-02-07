@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : macro-debug
+#key : macro-debug
+#contributor : Robert Krahn
+# --
+#![feature(log_syntax)]
+#![feature(trace_macros)]
+// log_syntax!($x);
+// trace_macros!(true); code; trace_macros!(false);
+// https://doc.rust-lang.org/reference/macros-by-example.html

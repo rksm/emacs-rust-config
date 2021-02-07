@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : impl_from
+#key : impl_from
+#contributor : Robert Krahn
+# --
+impl From<${1:from}> for ${2:For} {
+    fn from(${3:arg}: $1) -> Self {
+        $2 {$0}
+    }
+}

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : let-match-option
+#key : letopt
+#contributor : Robert Krahn
+# --
+let $3 = match ${1:what} {
+    None => ${2:return},
+    Some(${3:matched}) => $3,
+};

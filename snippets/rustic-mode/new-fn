@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : new-fn
+#key : newfn
+#contributor : Robert Krahn
+# --
+pub fn new() -> Self {
+    $0
+}
