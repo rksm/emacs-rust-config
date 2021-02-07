@@ -3,10 +3,6 @@
 
 (use-package rustic
   :ensure
-  ;; :custom
-  ;; (lsp-eldoc-hook nil) ;; uncomment to disable minibuffer doc
-  ;; (lsp-enable-symbol-highlighting nil) ;; uncomment for less flashiness
-  ;; (lsp-signature-auto-activate nil)
   :bind (:map rustic-mode-map
               ("C-c C-c l" . flycheck-list-errors)
               ("M-?" . lsp-find-references)
@@ -14,7 +10,15 @@
 	      ("C-c C-c r" . lsp-rename)
 	      ("C-c C-c q" . lsp-workspace-restart)
 	      ("C-c C-c Q" . lsp-workspace-shutdown)
-	      ("C-c C-c s" . lsp-rust-analyzer-status)))
+	      ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; for rust-analyzer integration
