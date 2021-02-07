@@ -3,7 +3,7 @@
 
 (use-package rustic
   :ensure
-  :custom
+  ;; :custom
   ;; (lsp-eldoc-hook nil) ;; uncomment to disable minibuffer doc
   ;; (lsp-enable-symbol-highlighting nil) ;; uncomment for less flashiness
   ;; (lsp-signature-auto-activate nil)
