@@ -3,3 +3,5 @@
 elpa/
 recentf
 custom.el
+/.dap-breakpoints
+/.extension/

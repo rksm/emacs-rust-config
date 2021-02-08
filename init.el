@@ -2,19 +2,23 @@
 ;; M-x package-install, select use-package. But if you start via
 ;; `standalone.el', this is being taken care of automatically.
 
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rustic = basic rust-mode + additions
 
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
-              ("C-c C-c l" . flycheck-list-errors)
+              ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
-	      ("C-c C-c a" . lsp-execute-code-action)
-	      ("C-c C-c r" . lsp-rename)
-	      ("C-c C-c q" . lsp-workspace-restart)
-	      ("C-c C-c Q" . lsp-workspace-shutdown)
-	      ("C-c C-c s" . lsp-rust-analyzer-status))
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status)
+              ("C-c C-c e" . lsp-rust-analyzer-expand-macro)
+              ("C-c C-c d" . dap-hydra))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
@@ -22,7 +26,12 @@
   ;; (setq lsp-signature-auto-activate nil)
 
   ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t))
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm
+  (setq-local buffer-save-without-query t))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; for rust-analyzer integration
@@ -31,7 +40,10 @@
   :ensure
   :commands lsp
   :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
@@ -41,14 +53,14 @@
   :custom
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil)
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6))
+  (lsp-ui-doc-enable nil))
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
 
 (use-package flycheck :ensure)
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; auto-completion and code snippets
@@ -64,13 +76,13 @@
   :ensure
   :bind
   (:map company-active-map
-	      ("C-n". company-select-next)
-	      ("C-p". company-select-previous)
-	      ("M-<". company-select-first)
-	      ("M->". company-select-last))
+              ("C-n". company-select-next)
+              ("C-p". company-select-previous)
+              ("M-<". company-select-first)
+              ("M->". company-select-last))
   (:map company-mode-map
-	("<tab>". tab-indent-or-complete)
-	("TAB". tab-indent-or-complete)))
+        ("<tab>". tab-indent-or-complete)
+        ("TAB". tab-indent-or-complete)))
 
 (defun company-yasnippet-or-completion ()
   (interactive)
@@ -98,3 +110,38 @@
         (if (check-expansion)
             (company-complete-common)
           (indent-for-tab-command)))))
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; for Cargo.toml and other config files
+
+(use-package toml-mode :ensure)
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; setting up debugging support with dap-mode
+
+(use-package exec-path-from-shell
+  :ensure
+  :init (exec-path-from-shell-initialize))
+
+(when (executable-find "lldb-mi")
+  (use-package dap-mode
+    :ensure
+    :config
+    (dap-ui-mode)
+    (dap-ui-controls-mode 1)
+
+    (require 'dap-lldb)
+    (require 'dap-gdb-lldb)
+    ;; installs .extension/vscode
+    (dap-gdb-lldb-setup)
+    (dap-register-debug-template
+     "Rust::LLDB Run Configuration"
+     (list :type "lldb"
+           :request "launch"
+           :name "LLDB::Run"
+	   :gdbpath "rust-lldb"
+           ;; uncomment if lldb-mi is not in PATH
+           ;; :lldbmipath "path/to/lldb-mi"
+           ))))

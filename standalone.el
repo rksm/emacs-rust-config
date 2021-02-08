@@ -37,7 +37,9 @@
 (load-theme 'leuven t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (recentf-mode 1)
-(setq recentf-max-saved-items 100)
+(setq recentf-max-saved-items 100
+      inhibit-startup-message t
+      ring-bell-function 'ignore)
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
