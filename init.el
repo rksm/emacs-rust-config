@@ -1,3 +1,7 @@
+;; When using this directly, you will need to have use-package installed:
+;; M-x package-install, select use-package. But if you start via
+;; `standalone.el', this is being taken care of automatically.
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rustic = basic rust-mode + additions
 
