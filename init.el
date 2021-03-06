@@ -18,7 +18,8 @@
               ("C-c C-c Q" . lsp-workspace-shutdown)
               ("C-c C-c s" . lsp-rust-analyzer-status)
               ("C-c C-c e" . lsp-rust-analyzer-expand-macro)
-              ("C-c C-c d" . dap-hydra))
+              ("C-c C-c d" . dap-hydra)
+              ("C-c C-c h" . lsp-ui-doc-glance))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
@@ -44,6 +45,7 @@
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
+  (lsp-rust-analyzer-server-display-inlay-hints t)
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
