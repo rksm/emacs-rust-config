@@ -12,8 +12,12 @@
 (setq package-user-dir (expand-file-name "elpa/" user-emacs-directory))
 (package-initialize)
 
-;; Install use-package that we require for managing all other dependencies
+;; Work around an Emacs v26 bug.
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(when (version< emacs-version "27")
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
+;; Install use-package that we require for managing all other dependencies
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
