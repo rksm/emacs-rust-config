@@ -27,7 +27,6 @@
   ;; (setq lsp-signature-auto-activate nil)
 
   ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
 (defun rk/rustic-mode-hook ()
@@ -36,7 +35,8 @@
   ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
   ;; no longer be necessary.
   (when buffer-file-name
-    (setq-local buffer-save-without-query t)))
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; for rust-analyzer integration
